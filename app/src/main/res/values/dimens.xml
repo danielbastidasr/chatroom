@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_window">20dp</dimen>
+    <dimen name="max_width_text">260dp</dimen>
+    <dimen name="padding_text">8dp</dimen>
+</resources>

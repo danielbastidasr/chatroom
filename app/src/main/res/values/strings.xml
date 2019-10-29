@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ChatRoom</string>
+    <string name="send_button">SEND</string>
+    <string name="enter_message">Enter message</string>
+</resources>
