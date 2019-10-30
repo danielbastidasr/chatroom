@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.*
 import androidx.recyclerview.widget.RecyclerView
-import daniel.bastidas.domain.Message
+import daniel.bastidas.domain.MessageEntity
 import kotlinx.android.synthetic.main.message_received_layout.view.*
 
 
@@ -17,7 +17,7 @@ class MessageListAdapter : RecyclerView.Adapter<MessageListAdapter.MessageViewHo
         private const val VIEW_TYPE_MESSAGE_RECEIVED = 2
     }
 
-    private var messages:MutableList<Message> = mutableListOf()
+    private var messages:MutableList<MessageEntity> = mutableListOf()
     private lateinit var context:Context
 
     override fun getItemCount() = messages.size
@@ -41,12 +41,12 @@ class MessageListAdapter : RecyclerView.Adapter<MessageListAdapter.MessageViewHo
         }
     }
 
-    fun updateData(newMessages: List<Message>) {
+    fun updateData(newMessages: List<MessageEntity>) {
         this.messages = newMessages.toMutableList()
         notifyDataSetChanged()
     }
 
-    fun addMessage(newMessage:Message):Int{
+    fun addMessage(newMessage:MessageEntity):Int{
         val insertAt = messages.size
         this.messages.add(insertAt,newMessage)
         notifyItemInserted(insertAt)
@@ -57,7 +57,7 @@ class MessageListAdapter : RecyclerView.Adapter<MessageListAdapter.MessageViewHo
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(message: Message) {
+        fun bind(message: MessageEntity) {
             itemView.apply {
                 text_message_body.text = message.textMessage
             }

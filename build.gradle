@@ -11,7 +11,7 @@ buildscript {
         core = "1.1.0"
         material = "1.1.0-beta01"
         constraintlayout = "1.1.3"
-        coroutines = "1.1.1"
+        coroutines = "1.3.2"
         viewModelExt = "2.1.0"
         archRoomExt = "2.2.1"
         //Test dependencies

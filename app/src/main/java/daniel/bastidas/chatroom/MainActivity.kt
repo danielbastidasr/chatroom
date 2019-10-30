@@ -3,16 +3,16 @@ package daniel.bastidas.chatroom
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import daniel.bastidas.domain.Message
+import daniel.bastidas.domain.MessageEntity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    private var currentUserId:String = "1"
     private val messageListAdapter = MessageListAdapter()
-    private val messages :List<Message> =
+    private val messages :List<MessageEntity> =
         listOf(
-            Message("texto 1","2545245"),
-            Message("texto 2","2244522222"))
+           )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +22,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setView(){
+
+        switchUser.setOnCheckedChangeListener { _, currentValue ->
+            if(currentValue){
+                switchToNormalUser()
+            }
+            else{
+                switchToOutsider()
+            }
+        }
+
         listMessages.apply {
             adapter = messageListAdapter
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -31,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             if(!etMessage.text.isNullOrBlank()){
 
                 val position = messageListAdapter.addMessage(
-                    Message(etMessage.text.toString() , "1")
+                    MessageEntity(etMessage.text.toString() , currentUserId)
                 )
                 listMessages.scrollToPosition(
                     position
@@ -39,5 +49,15 @@ class MainActivity : AppCompatActivity() {
                 etMessage.text.clear()
             }
         }
+    }
+
+    private fun switchToNormalUser(){
+        buttonSend.setTextColor(getColor(R.color.colorAccent))
+        currentUserId = "1"
+    }
+
+    private fun switchToOutsider(){
+        buttonSend.setTextColor(getColor(R.color.Black))
+        currentUserId = "outsider"
     }
 }

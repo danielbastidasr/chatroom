@@ -23,6 +23,7 @@ android {
 dependencies {
     implementation project(path: ':domain')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
     implementation "androidx.room:room-runtime:$archRoomExt"
     annotationProcessor "androidx.room:room-compiler:$archRoomExt"
 
