@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion compileSdk
 
@@ -25,7 +26,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
     implementation "androidx.room:room-runtime:$archRoomExt"
-    annotationProcessor "androidx.room:room-compiler:$archRoomExt"
+    implementation "androidx.room:room-ktx:$archRoomExt"
+    kapt "androidx.room:room-compiler:$archRoomExt"
 
     testImplementation "junit:junit:$junit"
 }

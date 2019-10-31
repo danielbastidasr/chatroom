@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion compileSdk
     defaultConfig {
@@ -32,5 +34,11 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelExt"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
     implementation "com.google.android.material:material:$material"
+    implementation "androidx.room:room-runtime:$archRoomExt"
+
+    implementation "org.koin:koin-android:$koin"
+    implementation "org.koin:koin-androidx-viewmodel:$koin"
+    implementation "org.koin:koin-android-architecture:0.9.1"
+
     testImplementation "junit:junit:$junit"
 }

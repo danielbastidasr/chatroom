@@ -2,23 +2,30 @@ package daniel.bastidas.chatroom
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import daniel.bastidas.domain.MessageEntity
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
+    private val mainviewModel: MessengerViewModel by viewModel()
+
     private var currentUserId:String = "1"
+
     private val messageListAdapter = MessageListAdapter()
-    private val messages :List<MessageEntity> =
-        listOf(
-           )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setView()
-        messageListAdapter.updateData(messages)
+
+        mainviewModel.stateLiveData
+            .observe(this,
+                Observer {
+                    messageListAdapter.updateData(it.listMessages)
+                })
     }
 
     private fun setView(){
@@ -39,14 +46,8 @@ class MainActivity : AppCompatActivity() {
 
         buttonSend.setOnClickListener {
             if(!etMessage.text.isNullOrBlank()){
-
-                val position = messageListAdapter.addMessage(
-                    MessageEntity(etMessage.text.toString() , currentUserId)
-                )
-                listMessages.scrollToPosition(
-                    position
-                )
-                etMessage.text.clear()
+                val message = MessageEntity(etMessage.text.toString() , currentUserId)
+                addMessage(message)
             }
         }
     }
@@ -59,5 +60,18 @@ class MainActivity : AppCompatActivity() {
     private fun switchToOutsider(){
         buttonSend.setTextColor(getColor(R.color.Black))
         currentUserId = "outsider"
+    }
+
+    private fun addMessage(newMessageSent:MessageEntity){
+        mainviewModel.postMessage(
+            newMessageSent
+        )
+        val position = messageListAdapter.addMessage(
+            newMessageSent
+        )
+        listMessages.scrollToPosition(
+            position
+        )
+        etMessage.text.clear()
     }
 }

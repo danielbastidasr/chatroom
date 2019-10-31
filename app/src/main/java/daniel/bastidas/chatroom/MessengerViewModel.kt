@@ -7,13 +7,14 @@ import daniel.bastidas.chatroom.common.BaseViewState
 import daniel.bastidas.domain.MessageEntity
 import daniel.bastidas.domain.usecase.GetInitialMessagesUseCase
 import daniel.bastidas.domain.usecase.SendMessageUseCase
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 internal class MessengerViewModel(
     private val getMessages: GetInitialMessagesUseCase,
     private val sendMessageUseCase: SendMessageUseCase
 ): BaseViewModel<MessengerViewModel.ViewState, MessengerViewModel.Action>(ViewState()) {
+
+    private var messages:MutableList<MessageEntity> = mutableListOf()
 
     override fun onLoadData() {
         getInitialMessageList()
@@ -27,16 +28,16 @@ internal class MessengerViewModel(
         }
 
     fun postMessage(message:MessageEntity) {
-         viewModelScope.launch {
-            sendMessageUseCase.execute(message)
+        messages.add(message)
+        viewModelScope.launch {
+             sendMessageUseCase.execute(message)
         }
     }
 
     private fun getInitialMessageList(){
         viewModelScope.launch {
-            getMessages.execute().collect{ listMessages ->
-                sendAction(Action.InitialiseMessages(listMessages))
-            }
+            messages = getMessages.execute().toMutableList()
+            sendAction(Action.InitialiseMessages(messages))
         }
     }
 
