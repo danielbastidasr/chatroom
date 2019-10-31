@@ -9,21 +9,21 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import daniel.bastidas.chatroom.R
-import daniel.bastidas.domain.MessageModel
+import daniel.bastidas.domain.Message
 import kotlinx.android.synthetic.main.message_received_layout.view.*
 
 
-class MessageListAdapter : PagedListAdapter<MessageModel, MessageListAdapter.MessageViewHolder>(
+class MessageListAdapter : PagedListAdapter<Message, MessageListAdapter.MessageViewHolder>(
     NewsDiffCallback
 ) {
 
     companion object{
-        val NewsDiffCallback = object : DiffUtil.ItemCallback<MessageModel>() {
-            override fun areItemsTheSame(oldItem: MessageModel, newItem: MessageModel): Boolean {
+        val NewsDiffCallback = object : DiffUtil.ItemCallback<Message>() {
+            override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: MessageModel, newItem: MessageModel): Boolean {
+            override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
                 return oldItem == newItem
             }
         }
@@ -66,9 +66,9 @@ class MessageListAdapter : PagedListAdapter<MessageModel, MessageListAdapter.Mes
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
 
-        private lateinit var message: MessageModel
+        private lateinit var message: Message
 
-        fun bind(message: MessageModel) {
+        fun bind(message: Message) {
             this.message = message
             itemView.apply {
                 text_message_body.text = message.textMessage

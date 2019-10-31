@@ -4,6 +4,6 @@ import androidx.paging.DataSource
 
 
 interface MessagesRepository {
-    fun getMessages(): DataSource.Factory<Int, MessageModel>
-    suspend fun sendMessage(message:MessageModel)
+    fun getMessages(): DataSource.Factory<Int, Message>
+    suspend fun sendMessage(message: Message)
 }

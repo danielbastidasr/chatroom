@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import daniel.bastidas.chatroom.R
-import daniel.bastidas.domain.MessageModel
+import daniel.bastidas.domain.Message
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         buttonSend.setOnClickListener {
             if(!etMessage.text.isNullOrBlank()){
                 val message =
-                    MessageModel(1, etMessage.text.toString(), currentUserId)
+                    Message(1, etMessage.text.toString(), currentUserId)
                 addMessage(message)
             }
         }
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         currentUserId = "outsider"
     }
 
-    private fun addMessage(newMessageSent: MessageModel){
+    private fun addMessage(newMessageSent: Message){
         mainViewModel.postMessage(
             newMessageSent
         )

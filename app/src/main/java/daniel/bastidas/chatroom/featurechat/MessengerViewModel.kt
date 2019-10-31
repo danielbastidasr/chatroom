@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.toLiveData
-import daniel.bastidas.domain.MessageModel
+import daniel.bastidas.domain.Message
 
 
 internal class MessengerViewModel(
@@ -16,7 +16,7 @@ internal class MessengerViewModel(
     private val sendMessageUseCase: SendMessageUseCase
 ):ViewModel() {
 
-    val listMessages:LiveData<PagedList<MessageModel>>
+    val listMessages:LiveData<PagedList<Message>>
 
     init {
         val pagedListConfig = PagedList.Config.Builder()
@@ -29,7 +29,7 @@ internal class MessengerViewModel(
         )
     }
 
-    fun postMessage(message: MessageModel) {
+    fun postMessage(message: Message) {
         viewModelScope.launch {
              sendMessageUseCase.execute(message)
         }

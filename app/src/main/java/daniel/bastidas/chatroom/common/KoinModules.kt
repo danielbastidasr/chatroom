@@ -2,7 +2,7 @@ package daniel.bastidas.chatroom.common
 
 
 import daniel.bastidas.chatroom.featurechat.MessengerViewModel
-import daniel.bastidas.data.MessageRoomDatabase
+import daniel.bastidas.data.dbroom.MessageRoomDatabase
 import daniel.bastidas.data.MessagesRepositoryImp
 import daniel.bastidas.domain.MessagesRepository
 import daniel.bastidas.domain.usecase.GetInitialMessagesUseCase
