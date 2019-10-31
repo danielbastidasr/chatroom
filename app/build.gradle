@@ -40,5 +40,7 @@ dependencies {
     implementation "org.koin:koin-androidx-viewmodel:$koin"
     implementation "org.koin:koin-android-architecture:0.9.1"
 
+    implementation "androidx.paging:paging-runtime-ktx:$paging"
+
     testImplementation "junit:junit:$junit"
 }

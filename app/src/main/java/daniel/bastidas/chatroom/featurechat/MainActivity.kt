@@ -1,17 +1,18 @@
-package daniel.bastidas.chatroom
+package daniel.bastidas.chatroom.featurechat
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import daniel.bastidas.domain.MessageEntity
+import androidx.recyclerview.widget.RecyclerView
+import daniel.bastidas.chatroom.R
+import daniel.bastidas.domain.MessageModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val mainviewModel: MessengerViewModel by viewModel()
-
+    private val mainViewModel: MessengerViewModel by viewModel()
     private var currentUserId:String = "1"
 
     private val messageListAdapter = MessageListAdapter()
@@ -21,10 +22,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setView()
 
-        mainviewModel.stateLiveData
+        mainViewModel.listMessages
             .observe(this,
                 Observer {
-                    messageListAdapter.updateData(it.listMessages)
+                    messageListAdapter.submitList(it)
                 })
     }
 
@@ -41,12 +42,16 @@ class MainActivity : AppCompatActivity() {
 
         listMessages.apply {
             adapter = messageListAdapter
-            layoutManager = LinearLayoutManager(this@MainActivity)
+            val layout = LinearLayoutManager(this@MainActivity,RecyclerView.VERTICAL, true)
+            layoutManager = layout
+
+            scrollWhenItemAdded()
         }
 
         buttonSend.setOnClickListener {
             if(!etMessage.text.isNullOrBlank()){
-                val message = MessageEntity(etMessage.text.toString() , currentUserId)
+                val message =
+                    MessageModel(1, etMessage.text.toString(), currentUserId)
                 addMessage(message)
             }
         }
@@ -62,16 +67,20 @@ class MainActivity : AppCompatActivity() {
         currentUserId = "outsider"
     }
 
-    private fun addMessage(newMessageSent:MessageEntity){
-        mainviewModel.postMessage(
+    private fun addMessage(newMessageSent: MessageModel){
+        mainViewModel.postMessage(
             newMessageSent
-        )
-        val position = messageListAdapter.addMessage(
-            newMessageSent
-        )
-        listMessages.scrollToPosition(
-            position
         )
         etMessage.text.clear()
+    }
+
+    private fun scrollWhenItemAdded(){
+        messageListAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                if (positionStart == 0) {
+                    listMessages.scrollToPosition(0)
+                }
+            }
+        })
     }
 }

@@ -3,11 +3,14 @@ apply plugin: 'kotlin'
 
 dependencies {
 
+    implementation "androidx.paging:paging-runtime-ktx:$paging"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
 
     testImplementation "junit:junit:$junit"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito"
+    implementation 'androidx.room:room-runtime:2.2.1'
+    annotationProcessor 'androidx.room:room-compiler:2.2.1'
 
 }
 

@@ -1,7 +1,7 @@
-package daniel.bastidas.chatroom.common.di
+package daniel.bastidas.chatroom.common
 
 
-import daniel.bastidas.chatroom.MessengerViewModel
+import daniel.bastidas.chatroom.featurechat.MessengerViewModel
 import daniel.bastidas.data.MessageRoomDatabase
 import daniel.bastidas.data.MessagesRepositoryImp
 import daniel.bastidas.domain.MessagesRepository
@@ -13,7 +13,7 @@ import org.koin.dsl.module
 
 val presentationModule = module {
     viewModel {
-        MessengerViewModel(get(),get())
+        MessengerViewModel(get(), get())
     }
 }
 

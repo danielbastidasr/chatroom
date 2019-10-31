@@ -1,7 +1,9 @@
 package daniel.bastidas.domain
 
+import androidx.paging.DataSource
+
 
 interface MessagesRepository {
-    suspend fun getMessages(): List<MessageEntity>
-    suspend fun sendMessage(message:MessageEntity)
+    fun getMessages(): DataSource.Factory<Int, MessageModel>
+    suspend fun sendMessage(message:MessageModel)
 }

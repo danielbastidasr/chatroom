@@ -15,6 +15,7 @@ buildscript {
         viewModelExt = "2.1.0"
         archRoomExt = "2.2.1"
         koin = "2.0.1"
+        paging = "2.1.0"
         //Test dependencies
         junit = "4.12"
         mockito = '2.1.0'

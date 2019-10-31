@@ -1,12 +1,13 @@
 package daniel.bastidas.domain.usecase
 
-import daniel.bastidas.domain.MessageEntity
+import androidx.paging.DataSource
+import daniel.bastidas.domain.MessageModel
 import daniel.bastidas.domain.MessagesRepository
 
 class GetInitialMessagesUseCase(
     private val messagesRepository: MessagesRepository
 ) {
-    suspend fun execute(): List<MessageEntity> {
+    fun execute(): DataSource.Factory<Int,MessageModel> {
         return messagesRepository.getMessages()
     }
 }

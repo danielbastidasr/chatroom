@@ -1,29 +1,19 @@
 package daniel.bastidas.data
 
-import daniel.bastidas.domain.MessageEntity
+import androidx.paging.DataSource
+import daniel.bastidas.domain.MessageModel
 import daniel.bastidas.domain.MessagesRepository
 
 
 class MessagesRepositoryImp(private val messageDao: MessageDao): MessagesRepository {
 
-    override suspend fun getMessages(): List<MessageEntity>
-        = messageDao
-            .getMessages().map {
-             message->
-                MessageEntity(
-                    message.textMessage,
-                    message.userId
-                )
-            }
+    override fun getMessages(): DataSource.Factory<Int, MessageModel>{
+        return messageDao
+            .getMessages()
+    }
 
-
-    override suspend fun sendMessage(message: MessageEntity)
+    override suspend fun sendMessage(message: MessageModel)
         = messageDao.insert(
-            MessageModel(
-                0,
-                message.textMessage,
-                message.userId
-            )
+            MessageModel(0, message.textMessage, message.userId)
         )
-
 }

@@ -1,4 +1,4 @@
-package daniel.bastidas.data
+package daniel.bastidas.domain
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
