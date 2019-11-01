@@ -30,6 +30,8 @@ class MessageListAdapter : PagedListAdapter<Message, MessageListAdapter.MessageV
 
         private const val VIEW_TYPE_MESSAGE_SENT = 1
         private const val VIEW_TYPE_MESSAGE_RECEIVED = 2
+        //TODO: Control animation with message state (sent,read,error)
+        private var idAnimated = -1
     }
 
     private lateinit var context:Context
@@ -76,12 +78,13 @@ class MessageListAdapter : PagedListAdapter<Message, MessageListAdapter.MessageV
         }
 
         fun animate(){
-            if(message.userId == VIEW_TYPE_MESSAGE_SENT.toString()){
+            if(message.id != idAnimated && message.userId == VIEW_TYPE_MESSAGE_SENT.toString()){
                 itemView.startAnimation(
                     AnimationUtils.loadAnimation(context,
                         R.anim.enter_from_bottom_animation
                     )
                 )
+                idAnimated = message.id
             }
         }
     }

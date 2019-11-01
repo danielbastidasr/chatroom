@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import daniel.bastidas.chatroom.R
 import daniel.bastidas.domain.Message
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.chat_view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -78,9 +79,20 @@ class MainActivity : AppCompatActivity() {
         messageListAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 if (positionStart == 0) {
+                    listMessages.clipToPadding = false
                     listMessages.scrollToPosition(0)
+
                 }
             }
         })
+
+        val scrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                recyclerView.clipToPadding = true
+            }
+        }
+
+        listMessages.addOnScrollListener(scrollListener)
     }
 }
