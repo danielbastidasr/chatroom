@@ -10,6 +10,7 @@ import daniel.bastidas.domain.Message
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.chat_view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
                 })
     }
 
+    // SETUP VIEW
     private fun setView(){
 
         switchUser.setOnCheckedChangeListener { _, currentValue ->
@@ -52,12 +54,13 @@ class MainActivity : AppCompatActivity() {
         buttonSend.setOnClickListener {
             if(!etMessage.text.isNullOrBlank()){
                 val message =
-                    Message(1, etMessage.text.toString(), currentUserId)
+                    Message(1, etMessage.text.toString(), currentUserId, Date())
                 addMessage(message)
             }
         }
     }
 
+    // SWITCH STATES
     private fun switchToNormalUser(){
         buttonSend.setTextColor(getColor(R.color.colorAccent))
         currentUserId = "1"
@@ -68,6 +71,7 @@ class MainActivity : AppCompatActivity() {
         currentUserId = "outsider"
     }
 
+    // ADD MESSAGE
     private fun addMessage(newMessageSent: Message){
         mainViewModel.postMessage(
             newMessageSent

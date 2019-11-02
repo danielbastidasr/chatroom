@@ -9,7 +9,7 @@ import androidx.room.Query
 @Dao
 interface MessageDao {
 
-    @Query("SELECT * from message_table ORDER BY id DESC ")
+    @Query("SELECT * from message_table ORDER BY time DESC ")
     fun getMessages(): DataSource.Factory<Int, MessageModel>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

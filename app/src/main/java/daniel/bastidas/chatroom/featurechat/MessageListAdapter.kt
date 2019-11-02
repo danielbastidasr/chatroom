@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import daniel.bastidas.chatroom.R
 import daniel.bastidas.domain.Message
 import kotlinx.android.synthetic.main.message_received_layout.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MessageListAdapter : PagedListAdapter<Message, MessageListAdapter.MessageViewHolder>(
@@ -74,6 +76,9 @@ class MessageListAdapter : PagedListAdapter<Message, MessageListAdapter.MessageV
             this.message = message
             itemView.apply {
                 text_message_body.text = message.textMessage
+                val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+                val formattedDate = formatter.format(message.time)
+                text_message_time.text = formattedDate
             }
         }
 
