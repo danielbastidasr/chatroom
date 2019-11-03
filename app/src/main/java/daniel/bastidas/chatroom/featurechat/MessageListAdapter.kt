@@ -57,7 +57,7 @@ class MessageListAdapter : PagedListAdapter<Message, MessageListAdapter.MessageV
                 if (prevTime!= null){
                     val hours = (item.time.time - prevTime.time )/ (1000*60*60)
 
-                    if(hours > 1){
+                    if(hours > 0){
                         holder.addDifferentDay()
                     }
                 }
