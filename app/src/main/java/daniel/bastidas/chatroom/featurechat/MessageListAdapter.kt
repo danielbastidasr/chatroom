@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.*
+import android.widget.TextView
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -45,6 +46,23 @@ class MessageListAdapter : PagedListAdapter<Message, MessageListAdapter.MessageV
             if (position == 0){
                 holder.animate()
             }
+
+            if (position == this.itemCount-1){
+                holder.addDifferentDay()
+            }
+            else{
+                val itemPrev = getItem(position+1)
+                val prevTime = itemPrev?.time
+
+                if (prevTime!= null){
+                    val hours = (item.time.time - prevTime.time )/ (1000*60*60)
+
+                    if(hours > 1){
+                        holder.addDifferentDay()
+                    }
+                }
+            }
+
         }
     }
 
@@ -71,10 +89,13 @@ class MessageListAdapter : PagedListAdapter<Message, MessageListAdapter.MessageV
     ) : RecyclerView.ViewHolder(itemView) {
 
         private lateinit var message: Message
+        private lateinit var day:TextView
 
         fun bind(message: Message) {
             this.message = message
             itemView.apply {
+                day = time_different_day
+                day.visibility = View.GONE
                 text_message_body.text = message.textMessage
                 val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
                 val formattedDate = formatter.format(message.time)
@@ -91,6 +112,13 @@ class MessageListAdapter : PagedListAdapter<Message, MessageListAdapter.MessageV
                 )
                 idAnimated = message.id
             }
+        }
+
+        fun addDifferentDay(){
+            val formatter = SimpleDateFormat("EEEE HH:mm", Locale.getDefault())
+            val formattedDate = formatter.format(message.time)
+            day.visibility = View.VISIBLE
+            day.text = formattedDate
         }
     }
 }
