@@ -14,6 +14,9 @@ import daniel.bastidas.domain.Message
 import kotlinx.android.synthetic.main.message_received_layout.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+import android.view.animation.Animation
+
+
 
 
 class MessageListAdapter : PagedListAdapter<Message, MessageListAdapter.MessageViewHolder>(
@@ -33,36 +36,22 @@ class MessageListAdapter : PagedListAdapter<Message, MessageListAdapter.MessageV
 
         private const val VIEW_TYPE_MESSAGE_SENT = 1
         private const val VIEW_TYPE_MESSAGE_RECEIVED = 2
-        //TODO: Control animation with message state (sent,read,error)
-        private var idAnimated = -1
+        private const val DAY_HOUR_PATTERN = "EEEE HH:mm"
+        private const val HOUR_PATTERN = "HH:mm"
     }
 
     private lateinit var context:Context
+    private lateinit var parent: ViewGroup
+    var shouldAnimateMessage = false
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val item = getItem(position)
         if(item != null){
             holder.bind(item)
-            if (position == 0){
+            if (shouldAnimateMessage && position == 0 ){
                 holder.animate()
             }
-
-            if (position == this.itemCount-1){
-                holder.addDifferentDay()
-            }
-            else{
-                val itemPrev = getItem(position+1)
-                val prevTime = itemPrev?.time
-
-                if (prevTime!= null){
-                    val hours = (item.time.time - prevTime.time )/ (1000*60*60)
-
-                    if(hours > 0){
-                        holder.addDifferentDay()
-                    }
-                }
-            }
-
+            addHolderTime(holder,item,position)
         }
     }
 
@@ -75,11 +64,32 @@ class MessageListAdapter : PagedListAdapter<Message, MessageListAdapter.MessageV
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         context = parent.context
+        this.parent = parent
         LayoutInflater.from(context).run {
             return when (viewType){
                 VIEW_TYPE_MESSAGE_SENT -> MessageViewHolder(inflate(
                     R.layout.message_sent_layout, parent, false))
                 else-> MessageViewHolder(inflate(R.layout.message_received_layout, parent, false))
+            }
+        }
+    }
+
+    private fun addHolderTime(vh:MessageViewHolder,message: Message,position: Int){
+        // First Message
+        if (position == this.itemCount-1){
+            vh.addDifferentDay()
+        }
+        // Check Messages hour difference
+        else{
+            val itemPrev = getItem(position+1)
+            val prevTime = itemPrev?.time
+
+            if (prevTime!= null){
+                val hours = (message.time.time - prevTime.time )/ (1000*60*60)
+
+                if(hours > 0){
+                    vh.addDifferentDay()
+                }
             }
         }
     }
@@ -97,28 +107,44 @@ class MessageListAdapter : PagedListAdapter<Message, MessageListAdapter.MessageV
                 day = time_different_day
                 day.visibility = View.GONE
                 text_message_body.text = message.textMessage
-                val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+                val formatter = SimpleDateFormat(HOUR_PATTERN, Locale.getDefault())
                 val formattedDate = formatter.format(message.time)
                 text_message_time.text = formattedDate
             }
         }
 
         fun animate(){
-            if(message.id != idAnimated && message.userId == VIEW_TYPE_MESSAGE_SENT.toString()){
-                itemView.startAnimation(
-                    AnimationUtils.loadAnimation(context,
-                        R.anim.enter_from_bottom_animation
-                    )
-                )
-                idAnimated = message.id
+            if(message.userId == VIEW_TYPE_MESSAGE_SENT.toString()){
+                animateMessage()
             }
+            shouldAnimateMessage = false
         }
 
         fun addDifferentDay(){
-            val formatter = SimpleDateFormat("EEEE HH:mm", Locale.getDefault())
+            val formatter = SimpleDateFormat(DAY_HOUR_PATTERN, Locale.getDefault())
             val formattedDate = formatter.format(message.time)
             day.visibility = View.VISIBLE
             day.text = formattedDate
+        }
+
+
+        private fun animateMessage(){
+            val anim = AnimationUtils.loadAnimation(context,
+                R.anim.enter_from_bottom_animation
+            )
+            anim.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(arg0: Animation) {
+                    parent.clipToPadding = false
+                }
+                override fun onAnimationEnd(arg0: Animation) {
+                    parent.clipToPadding = true
+                }
+                override fun onAnimationRepeat(arg0: Animation) {}
+            })
+
+            itemView.startAnimation(
+                anim
+            )
         }
     }
 }

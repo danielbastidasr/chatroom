@@ -82,21 +82,18 @@ class MainActivity : AppCompatActivity() {
     private fun scrollWhenItemAdded(){
         messageListAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                // On insert in the first position
                 if (positionStart == 0) {
-                    listMessages.clipToPadding = false
-                    listMessages.scrollToPosition(0)
-
+                    //(Check items diff == 1) => it's a new message
+                    if(itemCount == 1){
+                        messageListAdapter.shouldAnimateMessage = true
+                        listMessages.scrollToPosition(0)
+                    }
+                    else{
+                        messageListAdapter.shouldAnimateMessage = false
+                    }
                 }
             }
         })
-
-        val scrollListener = object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                recyclerView.clipToPadding = true
-            }
-        }
-
-        listMessages.addOnScrollListener(scrollListener)
     }
 }

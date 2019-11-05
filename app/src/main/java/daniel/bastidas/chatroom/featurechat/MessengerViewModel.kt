@@ -31,7 +31,7 @@ internal class MessengerViewModel(
 
     fun postMessage(message: Message) {
         viewModelScope.launch {
-             sendMessageUseCase.execute(message)
+            sendMessageUseCase.execute(message)
         }
     }
 }

@@ -19,17 +19,17 @@ val presentationModule = module {
 
 val domainModule = module {
     factory {
-        GetInitialMessagesUseCase(get())
+        GetInitialMessagesUseCase(messagesRepository = get())
     }
     factory {
-        SendMessageUseCase(get())
+        SendMessageUseCase(messagesRepository = get())
     }
 }
 
 val dataModule = module {
 
     single {
-        MessageRoomDatabase.getDatabase(androidApplication())
+        MessageRoomDatabase.getDatabase(context = androidApplication())
     }
 
     single{
@@ -37,7 +37,7 @@ val dataModule = module {
     }
 
     single {
-        MessagesRepositoryImp(get()) as MessagesRepository
+        MessagesRepositoryImp(messageDao = get()) as MessagesRepository
     }
 
 }
