@@ -45,6 +45,7 @@
             android:layout_width="64dp"
             android:layout_height="48dp"
             android:gravity="center"
+            android:enabled="false"
             android:textColor="@color/colorAccent"
             android:layout_gravity="bottom" />
 

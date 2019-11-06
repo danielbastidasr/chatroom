@@ -2,6 +2,7 @@ package daniel.bastidas.chatroom.featurechat
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -57,6 +58,9 @@ class MainActivity : AppCompatActivity() {
                     Message(1, etMessage.text.toString(), currentUserId, Date())
                 addMessage(message)
             }
+        }
+        etMessage.addTextChangedListener { text ->
+            buttonSend.isEnabled = !text.isNullOrBlank()
         }
     }
 
